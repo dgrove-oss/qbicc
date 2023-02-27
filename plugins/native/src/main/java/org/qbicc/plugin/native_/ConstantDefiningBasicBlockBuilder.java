@@ -134,11 +134,13 @@ public class ConstantDefiningBasicBlockBuilder extends DelegatingBasicBlockBuild
             try {
                 result = probe.run(ctxt.getAttachment(Driver.C_TOOL_CHAIN_KEY), ctxt.getAttachment(Driver.OBJ_PROVIDER_TOOL_KEY), null);
                 if (result == null) {
+                    ctxt.warning(location, "Undefined constant() %s", fieldElement.getName());
                     // constant is undefined
                     return lf.undefinedLiteralOfType(fieldElement.getType());
                 }
             } catch (IOException e) {
                 // constant is undefined either way
+                ctxt.warning(location, "Undefined constant() %s", fieldElement.getName());
                 return lf.undefinedLiteralOfType(fieldElement.getType());
             }
             CProbe.ConstantInfo constantInfo = result.getConstantInfo(name);
